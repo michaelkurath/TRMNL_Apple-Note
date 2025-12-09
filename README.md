@@ -1,4 +1,4 @@
-# TRMNL_Apple-Note
+# TRMNL Apple Note
 Send any Apple Note to your TRMNL
 
 
