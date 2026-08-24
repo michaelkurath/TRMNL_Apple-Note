@@ -1,0 +1,47 @@
+---
+strategy: webhook
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+framework_version: 2.3.7
+serverless_language: ''
+polling_url: ''
+polling_headers: ''
+polling_body: ''
+id: 191420
+oauth_enabled: 'false'
+oauth_pkce_enabled: 'no'
+oauth_authorize_url: ''
+oauth_token_url: ''
+oauth_scopes: ''
+oauth_scope_separator: ''
+oauth_refresh_url: ''
+oauth_auth_params: ''
+oauth_token_headers: ''
+oauth_token_site: ''
+oauth_token_params: ''
+oauth_token_request_auth_method: ''
+oauth_body_format: ''
+oauth_token_response_metadata: ''
+oauth_authorization_method: ''
+oauth_refresh_params: ''
+oauth_token_field_name: ''
+oauth_expiry_field_name: ''
+oauth_expiry_strategy: ''
+oauth_fixed_expiry_ms: ''
+custom_fields:
+- keyname: author_bio
+  field_type: author_bio
+  name: About This Plugin
+  category: custom,personal
+  description: Send any Apple Note to your TRMNL. Text size automatically adjusts to fit the amount of content. Questions or Feedback? Just send me an e-mail.
+  email_address: michael.kurath@gmail.com
+- keyname: copyable_8153
+  field_type: copyable
+  name: Shortcut URL
+  description: Download and import this shortcut on your iPhone, iPad or macOS device. You will need to enter the UUID of this plugin instance during first time setup. Then you can send any Apple Note to your TRMNL by invoking the shortcut from the ShareSheet.
+  value: https://www.icloud.com/shortcuts/f9cb583e81af4946a0cec64ebd0fea49
+name: Apple Note
+description:
+refresh_interval: 60
