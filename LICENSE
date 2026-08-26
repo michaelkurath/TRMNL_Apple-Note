@@ -1,0 +1,30 @@
+TRMNL Community Plugin License
+
+Copyright (c) 2026 Michael Kurath
+
+This plugin (the "Work") is published subject to the TRMNL Community Plugin
+License: https://trmnl.com/plugin-license
+
+General Use
+
+By publishing a plugin (hereinafter "Work") you (hereinafter "Creator") agree
+to the following:
+
+1. Visual design, data parsing logic, and markup shall conform to Creative
+   Commons "CC BY 4.0" terms:
+   https://creativecommons.org/licenses/by/4.0/
+2. End-users may contact Creator for support.
+3. Best efforts will be made to sustain functionality for any number of
+   connections with up to 5 minute refresh intervals.
+4. Work may be removed, unlisted, or transferred to the TRMNL team due to
+   persistent malfunction or Creator non-responsiveness. Creator may reclaim
+   this Work by contacting the TRMNL team and resuming maintenance
+   responsibilities.
+
+Exceptions
+
+1. If Work cannot sustain active connections or refresh rates, TRMNL may allow
+   rate limits and connection throttling, or higher payload limits than
+   documented.
+2. If TRMNL receives legal notice (e.g. DMCA takedown request), Work may be
+   de-listed despite satisfactory functionality.
