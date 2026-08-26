@@ -35,13 +35,20 @@ custom_fields:
   field_type: author_bio
   name: About This Plugin
   category: custom,personal
-  description: Send any Apple Note to your TRMNL. Text size automatically adjusts to fit the amount of content. Source code and documentation are available on <a href="https://github.com/michaelkurath/TRMNL_Apple-Note" target="_blank" rel="noopener">GitHub</a>. Questions or feedback? Just send me an email.
+  description: Send any Apple Note to your TRMNL. Setup takes about a minute. Save the plugin, copy the Webhook URL below, then install the Apple Shortcut. The shortcut needs only the UUID, which is the part after the final slash of the Webhook URL.
   email_address: michael.kurath@gmail.com
-  learn_more_url: https://github.com/michaelkurath/TRMNL_Apple-Note
-- keyname: copyable_8153
+  github_url: https://github.com/michaelkurath/TRMNL_Apple-Note
+  learn_more_url: https://github.com/michaelkurath/TRMNL_Apple-Note#quick-setup
+- keyname: webhook_url
+  field_type: copyable_webhook_url
+  name: 1. Copy your Webhook URL
+  description: Save the plugin first, then copy this URL. Its UUID is the part after the final slash.
+  help_text: Keep this URL private. Anyone with it can update your display.
+- keyname: apple_note_shortcut
   field_type: copyable
-  name: Shortcut URL
-  description: Download and import this shortcut on your iPhone, iPad or macOS device. You will need to enter the UUID of this plugin instance during first time setup. Then you can send any Apple Note to your TRMNL by invoking the shortcut from the ShareSheet.
+  name: 2. Install the Apple Shortcut
+  description: Open the <a href="https://www.icloud.com/shortcuts/f9cb583e81af4946a0cec64ebd0fea49" target="_blank" rel="noopener" class="underline">Apple Note shortcut</a>. During its first setup, enter only the UUID from the end of your Webhook URL.
+  help_text: Afterwards, share any Apple Note to the shortcut.
   value: https://www.icloud.com/shortcuts/f9cb583e81af4946a0cec64ebd0fea49
 name: Apple Note
 description: Send Apple Notes to your TRMNL
