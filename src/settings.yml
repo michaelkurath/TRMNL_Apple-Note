@@ -35,13 +35,14 @@ custom_fields:
   field_type: author_bio
   name: About This Plugin
   category: custom,personal
-  description: Send any Apple Note to your TRMNL. Text size automatically adjusts to fit the amount of content. Questions or Feedback? Just send me an e-mail.
+  description: Send any Apple Note to your TRMNL. Text size automatically adjusts to fit the amount of content. Source code and documentation are available on <a href="https://github.com/michaelkurath/TRMNL_Apple-Note" target="_blank" rel="noopener">GitHub</a>. Questions or feedback? Just send me an email.
   email_address: michael.kurath@gmail.com
+  learn_more_url: https://github.com/michaelkurath/TRMNL_Apple-Note
 - keyname: copyable_8153
   field_type: copyable
   name: Shortcut URL
   description: Download and import this shortcut on your iPhone, iPad or macOS device. You will need to enter the UUID of this plugin instance during first time setup. Then you can send any Apple Note to your TRMNL by invoking the shortcut from the ShareSheet.
   value: https://www.icloud.com/shortcuts/f9cb583e81af4946a0cec64ebd0fea49
 name: Apple Note
-description:
+description: Send Apple Notes to your TRMNL
 refresh_interval: 60
