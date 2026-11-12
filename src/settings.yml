@@ -33,6 +33,14 @@ custom_fields:
   description: Open the <a href="https://www.icloud.com/shortcuts/f9cb583e81af4946a0cec64ebd0fea49" target="_blank" rel="noopener" class="underline">Apple Note shortcut</a>. During its first setup, enter only the UUID from the end of your Webhook URL.
   help_text: Afterwards, share any Apple Note to the shortcut.
   value: https://www.icloud.com/shortcuts/f9cb583e81af4946a0cec64ebd0fea49
+- keyname: text_size
+  field_type: select
+  name: Text size
+  description: Classic keeps the original left-aligned look. Maximise makes short notes fill more of the display.
+  options:
+  - Classic: classic
+  - Maximise: maximise
+  default: maximise
 name: Apple Note
 description: Send Apple Notes to your TRMNL
 refresh_interval: 60
