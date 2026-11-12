@@ -32,11 +32,27 @@ The shortcut sends the note to TRMNL. Text size automatically adjusts to the amo
 
 All four TRMNL layouts are supported: Full, Half Horizontal, Half Vertical, and Quadrant.
 
+### Oversized notes
+
+The Node Serverless transform keeps only the note text (up to 500 characters,
+followed by an ellipsis if shortened) and its send date. The quadrant shows a
+shorter excerpt to fit its smaller layout. Attachments and unrelated
+fields are not stored for display. The original payload still reaches TRMNL;
+use a short, text-only note if you don't want to send the full contents.
+
+For an existing instance connected with [GitHub Sync](https://help.trmnl.com/en/articles/15977899-github-sync),
+import the latest changes into that same instance and verify **Edit Markup →
+Serverless** shows the Node script. Keep the existing Shortcut and webhook URL.
+Resend the note to apply the new transform. The
+[TRMNL webhook request limit with Serverless](https://help.trmnl.com/en/articles/17434705-plugin-strategies)
+still applies.
+
 ## Development
 
 The repository includes a `trmnlp` preview configuration and CI rendering for empty, tiny, short, medium, and long notes on TRMNL OG and TRMNL X.
 
 ```sh
+node --test test/transform.test.cjs
 trmnlp lint
 trmnlp serve
 ```
