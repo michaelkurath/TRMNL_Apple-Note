@@ -1,39 +1,63 @@
-{% assign note_text = Note | default: "" %}
-{% assign n = note_text | size %}
+{% assign note_text = Note | default: "" | strip %}
+{% assign note_length = note_text | size %}
+{% assign size_tier = "small" %}
+{% assign centered = false %}
 
-{% assign fs = 16 %}
-{% if n <= 20 %}
-  {% assign fs = 40 %}
-  {% elsif n <= 60 %}
-    {% assign fs = 28 %}
-    {% elsif n <= 140 %}
-      {% assign fs = 18 %}
-      {% elsif n <= 260 %}
-        {% assign fs = 16 %}
-        {% else %}
-        {% assign fs = 14 %}
-        {% endif %}
+{% if note_length <= 8 %}
+  {% assign size_tier = "mega" %}
+  {% assign centered = true %}
+{% elsif note_length <= 20 %}
+  {% assign size_tier = "giant" %}
+  {% assign centered = true %}
+{% elsif note_length <= 60 %}
+  {% assign size_tier = "xlarge" %}
+  {% assign centered = true %}
+{% elsif note_length <= 140 %}
+  {% assign size_tier = "large" %}
+{% elsif note_length <= 260 %}
+  {% assign size_tier = "medium" %}
+{% endif %}
 
-        <style>
-          .note_wrap{ max-height: 180px; overflow: hidden; }
-          .note_text{ font-family:"NicoClean-Regular", sans-serif; line-height:1.22; margin:0; }
-        </style>
+<style>
+  .apple-note { width: 100%; height: 100%; min-height: 0; display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden; }
+  .apple-note--centered { align-items: center; justify-content: center; text-align: center; }
+  .apple-note__text { max-width: 100%; font-family: "NicoClean-Regular", sans-serif; overflow-wrap: anywhere; }
+  .apple-note--mega .apple-note__text { font-size: 72px; font-weight: 600; letter-spacing: -0.04em; line-height: 0.92; }
+  .apple-note--giant .apple-note__text { font-size: 52px; font-weight: 600; letter-spacing: -0.03em; line-height: 0.96; }
+  .apple-note--xlarge .apple-note__text { font-size: 38px; line-height: 1.04; }
+  .apple-note--large .apple-note__text { font-size: 28px; line-height: 1.12; }
+  .apple-note--medium .apple-note__text { font-size: 21px; line-height: 1.18; }
+  .apple-note--small .apple-note__text { font-size: 16px; line-height: 1.22; }
+  .apple-note__empty-title { font-size: 34px; font-weight: 600; line-height: 1; }
+  .apple-note__empty-help { margin-top: 10px; font-size: 15px; line-height: 1.2; }
+  .screen--lg .apple-note--mega .apple-note__text { font-size: 96px; }
+  .screen--lg .apple-note--giant .apple-note__text { font-size: 72px; }
+  .screen--lg .apple-note--xlarge .apple-note__text { font-size: 52px; }
+  .screen--lg .apple-note--large .apple-note__text { font-size: 36px; }
+  .screen--lg .apple-note--medium .apple-note__text { font-size: 28px; }
+  .screen--lg .apple-note--small .apple-note__text { font-size: 20px; }
+  .screen--lg .apple-note__empty-title { font-size: 46px; }
+  .screen--lg .apple-note__empty-help { font-size: 20px; }
+</style>
 
-        <div class="layout">
-          <div class="columns" data-overflow="true">
-            <div class="column">
-              <div class="richtext">
-                <div class="content note_wrap" style="font-size: {{ fs }}px;">
-                  <p class="text--left note_text">{{ note_text | newline_to_br }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+<div class="layout layout--col">
+  {% if note_length == 0 %}
+    <div class="apple-note apple-note--centered">
+      <div class="apple-note__empty-title">No note yet</div>
+      <div class="apple-note__empty-help">Share an Apple Note to get started.</div>
+    </div>
+  {% else %}
+    <div class="apple-note apple-note--{{ size_tier }}{% if centered %} apple-note--centered{% endif %}" data-overflow="true">
+      <div class="apple-note__text">{{ note_text | escape | newline_to_br }}</div>
+    </div>
+  {% endif %}
+</div>
+<div class="title_bar">
+  <svg class="image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+    <path d="M18.656.93 6.464 13.122A4.966 4.966 0 0 0 5 16.657V18a1 1 0 0 0 1 1h1.343a4.966 4.966 0 0 0 3.535-1.464L23.07 5.344a3.125 3.125 0 0 0 0-4.414 3.194 3.194 0 0 0-4.414 0Zm3 3L9.464 16.122A3.02 3.02 0 0 1 7.343 17H7v-.343a3.02 3.02 0 0 1 .878-2.121L20.07 2.344a1.148 1.148 0 0 1 1.586 0 1.123 1.123 0 0 1 0 1.586Z"/>
+    <path d="M23 8.979a1 1 0 0 0-1 1V15h-4a3 3 0 0 0-3 3v4H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h9.042a1 1 0 0 0 0-2H5a5.006 5.006 0 0 0-5 5v14a5.006 5.006 0 0 0 5 5h11.343a4.968 4.968 0 0 0 3.536-1.464l2.656-2.658A4.968 4.968 0 0 0 24 16.343V9.979a1 1 0 0 0-1-1Zm-4.535 12.143a2.975 2.975 0 0 1-1.465.8V18a1 1 0 0 1 1-1h3.925a3.016 3.016 0 0 1-.8 1.464Z"/>
+  </svg>
+  <span class="title">{{ trmnl.plugin_settings.instance_name }}</span>
+  <span class="instance">{{ DateSent }}</span>
+</div>
 
-        <div class="title_bar">
-          <img class="image" <?xml version="1.0" encoding="UTF-8"?>
-          <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="16" height="16"><path d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z"/><path d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z"</svg>>
-          <span class="title">{{ trmnl.plugin_settings.instance_name }}</span>
-          <span class="instance">{{ DateSent }}</span>
-        </div>
