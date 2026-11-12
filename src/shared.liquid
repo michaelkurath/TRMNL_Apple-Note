@@ -1,0 +1,39 @@
+{% assign apple_note_text_size = trmnl.plugin_settings.custom_fields_values.text_size | default: "maximise" | strip | downcase %}
+{% if apple_note_text_size == "classic" %}
+  {% assign apple_note_classic_length = Note | default: "" | strip | size %}
+  {% if apple_note_classic_length <= 20 %}
+    {% assign apple_note_classic_tier = 0 %}
+  {% elsif apple_note_classic_length <= 60 %}
+    {% assign apple_note_classic_tier = 1 %}
+  {% elsif apple_note_classic_length <= 140 %}
+    {% assign apple_note_classic_tier = 2 %}
+  {% elsif apple_note_classic_length <= 260 %}
+    {% assign apple_note_classic_tier = 3 %}
+  {% else %}
+    {% assign apple_note_classic_tier = 4 %}
+  {% endif %}
+{% endif %}
+
+<style>
+  .apple-note__text { max-width: 100%; overflow-wrap: anywhere; }
+  /* Classic preserves the legacy CSS-pixel scale; Maximise uses device-specific framework values. */
+  .apple-note-classic { max-height: 360px; overflow: hidden; font-size: var(--apple-note-classic-size); }
+  .apple-note-classic--compact { max-height: 180px; }
+  .apple-note-classic__text { font-family: "NicoClean-Regular", sans-serif; line-height: 1.22; margin: 0; overflow-wrap: anywhere; }
+  .apple-note-classic[data-classic-size="14"] { --apple-note-classic-size: 14px; }
+  .apple-note-classic[data-classic-size="16"] { --apple-note-classic-size: 16px; }
+  .apple-note-classic[data-classic-size="18"] { --apple-note-classic-size: 18px; }
+  .apple-note-classic[data-classic-size="20"] { --apple-note-classic-size: 20px; }
+  .apple-note-classic[data-classic-size="22"] { --apple-note-classic-size: 22px; }
+  .apple-note-classic[data-classic-size="24"] { --apple-note-classic-size: 24px; }
+  .apple-note-classic[data-classic-size="26"] { --apple-note-classic-size: 26px; }
+  .apple-note-classic[data-classic-size="28"] { --apple-note-classic-size: 28px; }
+  .apple-note-classic[data-classic-size="32"] { --apple-note-classic-size: 32px; }
+  .apple-note-classic[data-classic-size="38"] { --apple-note-classic-size: 38px; }
+  .apple-note-classic[data-classic-size="40"] { --apple-note-classic-size: 40px; }
+  .apple-note-classic[data-classic-size="48"] { --apple-note-classic-size: 48px; }
+  .apple-note-classic[data-classic-size="52"] { --apple-note-classic-size: 52px; }
+  .apple-note-classic[data-classic-size="56"] { --apple-note-classic-size: 56px; }
+  .apple-note-classic[data-classic-size="72"] { --apple-note-classic-size: 72px; }
+  .apple-note-classic[data-classic-size="80"] { --apple-note-classic-size: 80px; }
+</style>
