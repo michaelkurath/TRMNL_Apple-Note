@@ -23,12 +23,13 @@ UUID:        your-uuid
 2. Tap **Share**.
 3. Select the **Apple Note** shortcut.
 
-The shortcut sends the note to TRMNL. Text size automatically adjusts to the amount of content:
+The shortcut sends the note to TRMNL. In the Apple Note plugin settings, use **Text size** to choose:
 
-- very short messages use a centered, giant-text treatment;
-- short notes remain centered and scale to the available view;
-- longer notes use progressively smaller, left-aligned text;
-- TRMNL OG and TRMNL X use separate size scales.
+- **Classic:** the original left-aligned layout and size steps.
+- **Maximise** (default): extra-large, centered short notes; longer notes use
+  smaller, left-aligned text. TRMNL OG and TRMNL X use separate size scales.
+
+Changing the mode does not require changing the Shortcut or webhook URL.
 
 All four TRMNL layouts are supported: Full, Half Horizontal, Half Vertical, and Quadrant.
 
@@ -49,7 +50,7 @@ still applies.
 
 ## Development
 
-The repository includes a `trmnlp` preview configuration and CI rendering for empty, tiny, short, medium, and long notes on TRMNL OG and TRMNL X.
+The repository includes a `trmnlp` preview configuration and CI rendering for empty, tiny, short, medium, and long notes in both modes on TRMNL OG and TRMNL X.
 
 ```sh
 node --test test/transform.test.cjs
