@@ -48,7 +48,10 @@ jobs:
 
           assert_mode() {
             for view in _build/*.html; do
-              rg --fixed-strings --quiet "data-note-mode=\"$NOTE_MODE\"" "$view"
+              if ! grep -Fq "data-note-mode=\"$NOTE_MODE\"" "$view"; then
+                echo "Expected $NOTE_MODE markup in $view" >&2
+                return 1
+              fi
             done
           }
 
