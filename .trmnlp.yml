@@ -1,0 +1,13 @@
+---
+watch:
+  - .trmnlp.yml
+  - src
+
+time_zone: Europe/Zurich
+
+variables:
+  Note: "Dinner at 7"
+  DateSent: "12 Nov 2026"
+  trmnl:
+    plugin_settings:
+      instance_name: Apple Note

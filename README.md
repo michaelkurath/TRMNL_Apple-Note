@@ -23,7 +23,23 @@ UUID:        your-uuid
 2. Tap **Share**.
 3. Select the **Apple Note** shortcut.
 
-The shortcut sends the note to TRMNL, and the text size automatically adjusts to the amount of content.
+The shortcut sends the note to TRMNL. Text size automatically adjusts to the amount of content:
+
+- very short messages use a centered, giant-text treatment;
+- short notes remain centered and scale to the available view;
+- longer notes use progressively smaller, left-aligned text;
+- TRMNL OG and TRMNL X use separate size scales.
+
+All four TRMNL layouts are supported: Full, Half Horizontal, Half Vertical, and Quadrant.
+
+## Development
+
+The repository includes a `trmnlp` preview configuration and CI rendering for empty, tiny, short, medium, and long notes on TRMNL OG and TRMNL X.
+
+```sh
+trmnlp lint
+trmnlp serve
+```
 
 ## License
 

@@ -1,0 +1,65 @@
+name: TRMNL
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate-and-render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0"
+
+      - uses: browser-actions/setup-firefox@v1
+
+      - name: Install render dependencies
+        run: |
+          sudo apt-get update -o Acquire::Retries=2 -o Acquire::http::Timeout=30
+          sudo apt-get install --yes --no-install-recommends -o Acquire::Retries=2 -o Acquire::http::Timeout=30 imagemagick
+          gem install trmnl_preview
+
+      - name: Lint plugin
+        run: trmnlp lint
+
+      - name: Render length and empty-state fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _previews
+
+          render_case() {
+            case_name="$1"
+            note="$2"
+            sed -i "s|^  Note:.*|  Note: \"${note}\"|" .trmnlp.yml
+
+            mkdir -p "_previews/${case_name}/og" "_previews/${case_name}/x"
+
+            rm -rf _build
+            trmnlp build --png --width 800 --height 480 --color-depth 1
+            cp _build/*.png "_previews/${case_name}/og/"
+
+            rm -rf _build
+            # TRMNL X reports a 1872x1404 panel and lays it out at 1040x780 CSS pixels.
+            # Passing the physical panel size lets trmnlp select the X model profile,
+            # including its lg breakpoint, 2x density, and capture scale.
+            trmnlp build --png --width 1872 --height 1404 --color-depth 4
+            cp _build/*.png "_previews/${case_name}/x/"
+          }
+
+          render_case empty ""
+          render_case tiny "OK"
+          render_case short "Dinner at 7"
+          render_case medium "Please remember to bring the blue folder and call me when you arrive."
+          render_case long "This is a deliberately long Apple Note used to verify that the plugin still scales down cleanly when a message contains several sentences. It should remain readable without colliding with the title bar or disappearing beyond the available display area on either TRMNL OG or TRMNL X."
+
+      - name: Upload render previews
+        uses: actions/upload-artifact@v6
+        with:
+          name: apple-note-previews
+          path: _previews
+          if-no-files-found: error

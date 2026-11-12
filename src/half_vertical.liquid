@@ -1,39 +1,42 @@
-{% assign note_text = Note | default: "" %}
-{% assign n = note_text | size %}
+{% assign note_text = Note | default: "" | strip %}
+{% assign note_length = note_text | size %}
+{% assign size_classes = "value--xsmall lg:value--small" %}
+{% assign centered = false %}
 
-{% assign fs = 24 %}
-{% if n <= 20 %}
-  {% assign fs = 72 %}
-  {% elsif n <= 60 %}
-    {% assign fs = 48 %}
-    {% elsif n <= 140 %}
-      {% assign fs = 32 %}
-      {% elsif n <= 260 %}
-        {% assign fs = 24 %}
-        {% else %}
-        {% assign fs = 20 %}
-        {% endif %}
+{% if note_length <= 8 %}
+  {% assign size_classes = "value--xxxlarge lg:value--mega" %}
+  {% assign centered = true %}
+{% elsif note_length <= 20 %}
+  {% assign size_classes = "value--xxlarge lg:value--xxxlarge" %}
+  {% assign centered = true %}
+{% elsif note_length <= 60 %}
+  {% assign size_classes = "value--large lg:value--xlarge" %}
+  {% assign centered = true %}
+{% elsif note_length <= 140 %}
+  {% assign size_classes = "value--base lg:value--large" %}
+{% elsif note_length <= 260 %}
+  {% assign size_classes = "value--small lg:value--base" %}
+{% endif %}
 
-        <style>
-          .note_wrap{ max-height: 360px; overflow: hidden; }
-          .note_text{ font-family:"NicoClean-Regular", sans-serif; line-height:1.22; margin:0; }
-        </style>
+<style>
+  .apple-note__text { max-width: 100%; overflow-wrap: anywhere; }
+</style>
 
-        <div class="layout">
-          <div class="columns" data-overflow="true">
-            <div class="column">
-              <div class="richtext">
-                <div class="content note_wrap" style="font-size: {{ fs }}px;">
-                  <p class="text--left note_text">{{ note_text | newline_to_br }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="title_bar">
-          <img class="image" <?xml version="1.0" encoding="UTF-8"?>
-          <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="16" height="16"><path d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z"/><path d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z"</svg>>
-          <span class="title">{{ trmnl.plugin_settings.instance_name }}</span>
-          <span class="instance">{{ DateSent }}</span>
-        </div>
+<div class="layout layout--col{% if centered or note_length == 0 %} layout--center{% else %} layout--top layout--left{% endif %}">
+  {% if note_length == 0 %}
+    <div class="flex flex--col flex--center gap--small">
+      <div class="title title--xxlarge">No note yet</div>
+      <div class="description description--large lg:description--xlarge">Share an Apple Note to get started.</div>
+    </div>
+  {% else %}
+    <div class="value {{ size_classes }} apple-note__text{% if centered %} text--center{% else %} text--left{% endif %}" data-overflow="true">{{ note_text | escape | newline_to_br }}</div>
+  {% endif %}
+</div>
+<div class="title_bar">
+  <svg class="image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+    <path d="M18.656.93 6.464 13.122A4.966 4.966 0 0 0 5 16.657V18a1 1 0 0 0 1 1h1.343a4.966 4.966 0 0 0 3.535-1.464L23.07 5.344a3.125 3.125 0 0 0 0-4.414 3.194 3.194 0 0 0-4.414 0Zm3 3L9.464 16.122A3.02 3.02 0 0 1 7.343 17H7v-.343a3.02 3.02 0 0 1 .878-2.121L20.07 2.344a1.148 1.148 0 0 1 1.586 0 1.123 1.123 0 0 1 0 1.586Z"/>
+    <path d="M23 8.979a1 1 0 0 0-1 1V15h-4a3 3 0 0 0-3 3v4H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h9.042a1 1 0 0 0 0-2H5a5.006 5.006 0 0 0-5 5v14a5.006 5.006 0 0 0 5 5h11.343a4.968 4.968 0 0 0 3.536-1.464l2.656-2.658A4.968 4.968 0 0 0 24 16.343V9.979a1 1 0 0 0-1-1Zm-4.535 12.143a2.975 2.975 0 0 1-1.465.8V18a1 1 0 0 1 1-1h3.925a3.016 3.016 0 0 1-.8 1.464Z"/>
+  </svg>
+  <span class="title">{{ trmnl.plugin_settings.instance_name }}</span>
+  <span class="instance">{{ DateSent }}</span>
+</div>
