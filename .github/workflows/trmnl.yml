@@ -1,0 +1,85 @@
+name: TRMNL
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate-and-render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0"
+
+      - uses: browser-actions/setup-firefox@v1
+
+      - name: Install render dependencies
+        run: |
+          sudo apt-get update -o Acquire::Retries=2 -o Acquire::http::Timeout=30
+          sudo apt-get install --yes --no-install-recommends -o Acquire::Retries=2 -o Acquire::http::Timeout=30 imagemagick
+          gem install trmnl_preview
+
+      - name: Lint plugin
+        run: trmnlp lint
+
+      - name: Render length and empty-state fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _build
+
+          render_case() {
+            case_name="$1"
+            note="$2"
+            sed -i "s|^  Note:.*|  Note: \"${note}\"|" .trmnlp.yml
+
+            trmnlp serve --bind 127.0.0.1 > "/tmp/trmnlp-${case_name}.log" 2>&1 &
+            server_pid=$!
+            trap 'kill "$server_pid" 2>/dev/null || true' RETURN
+
+            for attempt in {1..30}; do
+              if curl --silent --fail http://127.0.0.1:4567/full > /dev/null; then
+                break
+              fi
+              if ! kill -0 "$server_pid" 2>/dev/null; then
+                cat "/tmp/trmnlp-${case_name}.log"
+                exit 1
+              fi
+              sleep 1
+            done
+
+            mkdir -p "_build/${case_name}/og" "_build/${case_name}/x"
+            for view in full half_horizontal half_vertical quadrant; do
+              curl --get --fail --silent --show-error \
+                --data-urlencode "screen_classes=screen screen--1bit screen--og_png screen--md screen--density-1x screen--1x" \
+                --data "width=800" --data "height=480" --data "color_depth=1" \
+                "http://127.0.0.1:4567/render/${view}.png" \
+                --output "_build/${case_name}/og/${view}.png"
+              curl --get --fail --silent --show-error \
+                --data-urlencode "screen_classes=screen screen--4bit screen--v2 screen--lg screen--density-2x screen--1x" \
+                --data "width=1040" --data "height=780" --data "color_depth=4" \
+                "http://127.0.0.1:4567/render/${view}.png" \
+                --output "_build/${case_name}/x/${view}.png"
+            done
+
+            kill "$server_pid"
+            wait "$server_pid" || true
+            trap - RETURN
+          }
+
+          render_case empty ""
+          render_case tiny "OK"
+          render_case short "Dinner at 7"
+          render_case medium "Please remember to bring the blue folder and call me when you arrive."
+          render_case long "This is a deliberately long Apple Note used to verify that the plugin still scales down cleanly when a message contains several sentences. It should remain readable without colliding with the title bar or disappearing beyond the available display area on either TRMNL OG or TRMNL X."
+
+      - name: Upload render previews
+        uses: actions/upload-artifact@v6
+        with:
+          name: apple-note-previews
+          path: _build
+          if-no-files-found: error
