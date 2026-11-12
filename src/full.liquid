@@ -18,11 +18,22 @@
   {% assign size_classes = "value--small lg:value--base" %}
 {% endif %}
 
-<style>
-  .apple-note__text { max-width: 100%; overflow-wrap: anywhere; }
-</style>
-
-<div class="layout layout--col{% if centered or note_length == 0 %} layout--center{% else %} layout--top layout--left{% endif %}">
+{% if apple_note_text_size == "classic" and note_length > 0 %}
+  {% assign classic_sizes = "80|56|38|28|22" | split: "|" %}
+  {% assign classic_size = classic_sizes[apple_note_classic_tier] %}
+  <div class="layout" data-note-mode="classic">
+    <div class="columns" data-overflow="true">
+      <div class="column">
+        <div class="richtext">
+          <div class="content apple-note-classic" data-classic-size="{{ classic_size }}">
+            <p class="text--left apple-note-classic__text">{{ note_text | escape | newline_to_br }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+<div class="layout layout--col{% if centered or note_length == 0 %} layout--center{% else %} layout--top layout--left{% endif %}" data-note-mode="{% if apple_note_text_size == 'classic' %}classic{% else %}maximise{% endif %}">
   {% if note_length == 0 %}
     <div class="flex flex--col flex--center gap--small">
       <div class="title title--xxlarge">No note yet</div>
@@ -32,6 +43,7 @@
     <div class="value {{ size_classes }} apple-note__text{% if centered %} text--center{% else %} text--left{% endif %}" data-overflow="true">{{ note_text | escape | newline_to_br }}</div>
   {% endif %}
 </div>
+{% endif %}
 <div class="title_bar">
   <svg class="image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
     <path d="M18.656.93 6.464 13.122A4.966 4.966 0 0 0 5 16.657V18a1 1 0 0 0 1 1h1.343a4.966 4.966 0 0 0 3.535-1.464L23.07 5.344a3.125 3.125 0 0 0 0-4.414 3.194 3.194 0 0 0-4.414 0Zm3 3L9.464 16.122A3.02 3.02 0 0 1 7.343 17H7v-.343a3.02 3.02 0 0 1 .878-2.121L20.07 2.344a1.148 1.148 0 0 1 1.586 0 1.123 1.123 0 0 1 0 1.586Z"/>
