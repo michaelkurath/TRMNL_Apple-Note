@@ -35,17 +35,20 @@ jobs:
           render_case() {
             case_name="$1"
             note="$2"
-            sed -i "s|^  Note:.*|  Note: \"${note}\"|" .trmnlp.yml
+            sed -i "s|^  Note:.*|  Note: \"\${note}\"|" .trmnlp.yml
 
-            mkdir -p "_previews/${case_name}/og" "_previews/${case_name}/x"
+            mkdir -p "_previews/\${case_name}/og" "_previews/\${case_name}/x"
 
             rm -rf _build
             trmnlp build --png --width 800 --height 480 --color-depth 1
-            cp _build/*.png "_previews/${case_name}/og/"
+            cp _build/*.png "_previews/\${case_name}/og/"
 
             rm -rf _build
-            trmnlp build --png --width 1040 --height 780 --color-depth 4
-            cp _build/*.png "_previews/${case_name}/x/"
+            # TRMNL X reports a 1872x1404 panel and lays it out at 1040x780 CSS pixels.
+            # Passing the physical panel size lets trmnlp select the X model profile,
+            # including its lg breakpoint, 2x density, and capture scale.
+            trmnlp build --png --width 1872 --height 1404 --color-depth 4
+            cp _build/*.png "_previews/\${case_name}/x/"
           }
 
           render_case empty ""
