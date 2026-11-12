@@ -1,4 +1,4 @@
-{% assign note_text = Note | default: "" | strip %}
+{% assign note_text = Note | default: "" | strip | truncate: 350, "…" %}
 {% assign note_length = note_text | size %}
 {% assign size_classes = "value--xxsmall lg:value--xsmall" %}
 {% assign centered = false %}
