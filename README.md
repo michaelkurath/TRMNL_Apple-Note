@@ -35,7 +35,8 @@ All four TRMNL layouts are supported: Full, Half Horizontal, Half Vertical, and 
 ### Oversized notes
 
 The Node Serverless transform keeps only the note text (up to 500 characters,
-followed by an ellipsis if shortened) and its send date. Attachments and unrelated
+followed by an ellipsis if shortened) and its send date. The quadrant shows a
+shorter excerpt to fit its smaller layout. Attachments and unrelated
 fields are not stored for display. The original payload still reaches TRMNL;
 use a short, text-only note if you don't want to send the full contents.
 
