@@ -17,6 +17,13 @@ jobs:
 
       - uses: browser-actions/setup-firefox@v1
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Test webhook transform
+        run: node --test test/transform.test.cjs
+
       - name: Install render dependencies
         run: |
           sudo apt-get update -o Acquire::Retries=2 -o Acquire::http::Timeout=30
@@ -55,7 +62,8 @@ jobs:
           render_case tiny "OK"
           render_case short "Dinner at 7"
           render_case medium "Please remember to bring the blue folder and call me when you arrive."
-          render_case long "This is a deliberately long Apple Note used to verify that the plugin still scales down cleanly when a message contains several sentences. It should remain readable without colliding with the title bar or disappearing beyond the available display area on either TRMNL OG or TRMNL X."
+          long_note="$(node -e 'const {readFileSync} = require("node:fs"); const {runInNewContext} = require("node:vm"); const run = runInNewContext(readFileSync("src/transform.js", "utf8") + "\nrun"); const Note = "Please remember to bring the blue folder and call me when you arrive. ".repeat(2000); process.stdout.write(run({Note}).Note);')"
+          render_case long "$long_note"
 
       - name: Upload render previews
         uses: actions/upload-artifact@v6
