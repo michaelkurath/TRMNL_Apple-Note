@@ -1,54 +1,38 @@
 {% assign note_text = Note | default: "" | strip %}
 {% assign note_length = note_text | size %}
-{% assign size_tier = "small" %}
+{% assign size_classes = "value--xxsmall lg:value--xsmall" %}
 {% assign centered = false %}
 
 {% if note_length <= 8 %}
-  {% assign size_tier = "mega" %}
+  {% assign size_classes = "value--xxlarge lg:value--xxxlarge" %}
   {% assign centered = true %}
 {% elsif note_length <= 20 %}
-  {% assign size_tier = "giant" %}
+  {% assign size_classes = "value--xlarge lg:value--xxlarge" %}
   {% assign centered = true %}
 {% elsif note_length <= 60 %}
-  {% assign size_tier = "xlarge" %}
+  {% assign size_classes = "value--base lg:value--large" %}
   {% assign centered = true %}
 {% elsif note_length <= 140 %}
-  {% assign size_tier = "large" %}
+  {% assign size_classes = "value--small lg:value--base" %}
 {% elsif note_length <= 260 %}
-  {% assign size_tier = "medium" %}
+  {% assign size_classes = "value--xsmall lg:value--small" %}
 {% endif %}
 
 <style>
   .apple-note { width: 100%; height: 100%; min-height: 0; display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden; }
   .apple-note--centered { align-items: center; justify-content: center; text-align: center; }
-  .apple-note__text { max-width: 100%; font-family: "NicoClean-Regular", sans-serif; overflow-wrap: anywhere; }
-  .apple-note--mega .apple-note__text { font-size: 96px; font-weight: 600; letter-spacing: -0.04em; line-height: 0.92; }
-  .apple-note--giant .apple-note__text { font-size: 72px; font-weight: 600; letter-spacing: -0.03em; line-height: 0.96; }
-  .apple-note--xlarge .apple-note__text { font-size: 48px; line-height: 1.04; }
-  .apple-note--large .apple-note__text { font-size: 32px; line-height: 1.12; }
-  .apple-note--medium .apple-note__text { font-size: 24px; line-height: 1.18; }
-  .apple-note--small .apple-note__text { font-size: 18px; line-height: 1.22; }
-  .apple-note__empty-title { font-size: 42px; font-weight: 600; line-height: 1; }
-  .apple-note__empty-help { margin-top: 10px; font-size: 18px; line-height: 1.2; }
-  .screen--lg .apple-note--mega .apple-note__text { font-size: 140px; }
-  .screen--lg .apple-note--giant .apple-note__text { font-size: 100px; }
-  .screen--lg .apple-note--xlarge .apple-note__text { font-size: 68px; }
-  .screen--lg .apple-note--large .apple-note__text { font-size: 44px; }
-  .screen--lg .apple-note--medium .apple-note__text { font-size: 32px; }
-  .screen--lg .apple-note--small .apple-note__text { font-size: 24px; }
-  .screen--lg .apple-note__empty-title { font-size: 58px; }
-  .screen--lg .apple-note__empty-help { font-size: 24px; }
+  .apple-note__text { max-width: 100%; overflow-wrap: anywhere; }
 </style>
 
 <div class="layout layout--col">
   {% if note_length == 0 %}
-    <div class="apple-note apple-note--centered">
-      <div class="apple-note__empty-title">No note yet</div>
-      <div class="apple-note__empty-help">Share an Apple Note to get started.</div>
+    <div class="apple-note apple-note--centered gap--small">
+      <div class="title title--xxlarge">No note yet</div>
+      <div class="description description--large lg:description--xlarge">Share an Apple Note to get started.</div>
     </div>
   {% else %}
-    <div class="apple-note apple-note--{{ size_tier }}{% if centered %} apple-note--centered{% endif %}" data-overflow="true">
-      <div class="apple-note__text">{{ note_text | escape | newline_to_br }}</div>
+    <div class="apple-note{% if centered %} apple-note--centered{% endif %}" data-overflow="true">
+      <div class="value {{ size_classes }} apple-note__text">{{ note_text | escape | newline_to_br }}</div>
     </div>
   {% endif %}
 </div>
@@ -60,4 +44,3 @@
   <span class="title">{{ trmnl.plugin_settings.instance_name }}</span>
   <span class="instance">{{ DateSent }}</span>
 </div>
-
